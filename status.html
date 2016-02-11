@@ -1,0 +1,19 @@
+<html>
+<head>
+{% if internet %}
+  <title>Internet is UP</title>
+{% else %}
+  <title>Internet is DOWN</title>
+{% endif %}
+</head>
+<body>
+  {% if internet %}
+    <h1>Internet is UP</h1>
+  {% else %}
+    <h1>Internet is DOWN</h1>
+  {% endif %}
+  <div class="uptime">Uptime for the last hour: {{ hour_uptime }}</div>
+  <div class="uptime">Uptime for the last day: {{ day_uptime }}</div>
+  <div class="uptime">Uptime for the last week: {{ week_uptime }}</div>
+</body>
+</html>

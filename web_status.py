@@ -15,6 +15,7 @@ cur = conn.cursor()
 def status():
     web_status = {}
 
+    # Get the most recent status
     cur.execute("SELECT status FROM status LIMIT 1;")
     web_status['internet'] = cur.fetchone()[0]
 
@@ -30,23 +31,20 @@ def status():
     else:
         web_status['time'] = time[0]
 
+    # Get the number of updates in the last hour
     cur.execute("SELECT count(status) FROM status WHERE ts > NOW() - INTERVAL '1 hour';")
     hour_count = cur.fetchone()[0]
-    #assume hour count is just 120 (ignore timing jitter)
-    #hour_count = 120
 
     cur.execute("SELECT count(status) FROM status WHERE status = true AND ts > NOW() - INTERVAL '1 hour';")
     web_status['hour_uptime'] = 100*cur.fetchone()[0] / hour_count
 
-    #assume hour count is just 120*24 (ignore timing jitter)
-    #day_count = 2880
+    # Get the number of updates in the last day
     cur.execute("SELECT count(status) FROM status WHERE ts > NOW() - INTERVAL '1 day';")
     day_count = cur.fetchone()[0]
     cur.execute("SELECT count(status) FROM status WHERE status = true AND ts > NOW() - INTERVAL '1 day';")
     web_status['day_uptime'] = 100*cur.fetchone()[0]/day_count
 
-    #assume hour count is just 120*24*7 (ignore timing jitter)
-    #week_count = 20160
+    # Get the number of updates in the last week
     cur.execute("SELECT count(status) FROM status WHERE ts > NOW() - INTERVAL '1 week';")
     week_count = cur.fetchone()[0]
     cur.execute("SELECT count(status) FROM status WHERE status = true AND ts > NOW() - INTERVAL '1 week';")

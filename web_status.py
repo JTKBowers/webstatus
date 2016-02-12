@@ -42,13 +42,13 @@ def status():
     cur.execute("SELECT count(status) FROM status WHERE ts > NOW() - INTERVAL '1 day';")
     day_count = cur.fetchone()[0]
     cur.execute("SELECT count(status) FROM status WHERE status = true AND ts > NOW() - INTERVAL '1 day';")
-    web_status['day_uptime'] = 100*cur.fetchone()[0]/day_count
+    web_status['day_uptime'] = 100*cur.fetchone()[0] / day_count
 
     # Get the number of updates in the last week
     cur.execute("SELECT count(status) FROM status WHERE ts > NOW() - INTERVAL '1 week';")
     week_count = cur.fetchone()[0]
     cur.execute("SELECT count(status) FROM status WHERE status = true AND ts > NOW() - INTERVAL '1 week';")
-    web_status['week_uptime'] = 100* cur.fetchone()[0]/week_count
+    web_status['week_uptime'] = 100* cur.fetchone()[0] / week_count
 
     return template.render(web_status)
 

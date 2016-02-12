@@ -1,6 +1,5 @@
 import jinja2
 import psycopg2
-import check_status
 from flask import Flask
 
 
@@ -14,9 +13,10 @@ cur = conn.cursor()
 
 @app.route("/")
 def status():
-    web_status = {
-        'internet': check_status.is_up(),
-    }
+    web_status = {}
+
+    cur.execute("SELECT status FROM status LIMIT 1;")
+    web_status['internet'] = cur.fetchone()[0]
 
     cur.execute("SELECT count(status) FROM status WHERE ts > NOW() - INTERVAL '1 hour';")
     hour_count = cur.fetchone()[0]

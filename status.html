@@ -12,6 +12,7 @@
   {% else %}
     <h1>Internet is <div style="color: red;">DOWN</div></h1>
   {% endif %}
+  (Since {{ time }})
   <div class="uptime">Uptime for the last hour: {{ hour_uptime }}%</div>
   <div class="uptime">Uptime for the last day: {{ day_uptime }}%</div>
   <div class="uptime">Uptime for the last week: {{ week_uptime }}%</div>

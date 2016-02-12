@@ -18,6 +18,18 @@ def status():
     cur.execute("SELECT status FROM status LIMIT 1;")
     web_status['internet'] = cur.fetchone()[0]
 
+    # get the time since the last status change
+    if web_status['internet']:
+        cur.execute("SELECT now() - ts FROM status WHERE status = false ORDER BY ts DESC LIMIT 1;")
+    else:
+        cur.execute("SELECT now() - ts FROM status WHERE status = true ORDER BY ts DESC LIMIT 1;")
+    time = cur.fetchone()
+
+    if time is None:
+        web_status['time'] = "forever"
+    else:
+        web_status['time'] = time[0]
+
     cur.execute("SELECT count(status) FROM status WHERE ts > NOW() - INTERVAL '1 hour';")
     hour_count = cur.fetchone()[0]
     #assume hour count is just 120 (ignore timing jitter)
